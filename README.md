@@ -17,9 +17,11 @@
 ## 部署
 
 ```
+# 注：需安装 ffmpeg libffi-dev libwebp-dev git python3-pip 等相关依赖
 git clone https://github.com/Akyuu/telegram-bot.git
 cd telegram-bot/
 pip3 install -r requirements.txt
+# 之后需要修改 config.py 中 API_TOKEN 常量的值
 python3 server.py
 ```
 
