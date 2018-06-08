@@ -17,7 +17,6 @@
 ## 部署
 
 ```
-apt install git ffmpeg python3-pip -y
 git clone https://github.com/Akyuu/telegram-bot.git
 cd telegram-bot/
 pip3 install -r requirements.txt
