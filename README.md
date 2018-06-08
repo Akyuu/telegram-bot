@@ -17,7 +17,7 @@
 ## 部署
 
 ```
-# 注：需安装 ffmpeg libffi-dev libwebp-dev git python3-pip 等相关依赖
+# 注：需安装 ffmpeg libffi-dev libwebp-dev git python3-pip 等相关依赖
 git clone https://github.com/Akyuu/telegram-bot.git
 cd telegram-bot/
 pip3 install -r requirements.txt
