@@ -1,0 +1,10 @@
+certifi==2018.4.16
+cffi==1.11.5
+chardet==3.0.4
+idna==2.6
+numpy==1.14.4
+Pillow==5.1.0
+pycparser==2.18
+requests==2.18.4
+urllib3==1.22
+webp==0.1.0a7
