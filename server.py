@@ -5,7 +5,7 @@
 import config
 import requests
 import logging
-from handler.repeat import RepeatHandler
+from handler.user_info import UserInfoHandler
 from handler.no_command import NotFoundHandler
 from handler.sticker import StickerHandler
 from handler.video import VideoHandler
@@ -26,8 +26,8 @@ def deliver_message(res):
             h = NotFoundHandler(message)
         elif text.startswith('/'):  # 对于所有以 / 开头的消息进行处理
             h = NotFoundHandler(message)
-        # else:  # 如果是普通的文本消息，就复读机
-        #     h = RepeatHandler(message)
+        else:  # 如果是普通的文本消息，就输出被转发者或用户信息
+            h = UserInfoHandler(message)
     elif message.get('sticker'):
         h = StickerHandler(message)
     elif message.get('document') and message['document'].get('mime_type') == 'video/mp4':

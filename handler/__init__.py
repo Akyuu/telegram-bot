@@ -24,14 +24,6 @@ class Handler:
         if markdown: j['parse_mode'] = 'Markdown'
         r = requests.post(url, json=j)
 
-    # def send_photo(self, photo, chat_id=None):
-    #     url = "https://api.telegram.org/bot%s/sendPhoto" % config.API_TOKEN
-    #     if not chat_id:
-    #         chat_id = self.chat_id
-    #     j = {"chat_id": chat_id, "photo": photo}
-    #     print(j)
-    #     r = requests.post(url, json=j)
-    #     print(r.text)
 
 class TextHandler(Handler):
     def __init__(self, message):
