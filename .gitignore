@@ -105,3 +105,6 @@ venv.bak/
 
 # Pycharm
 .idea/
+
+# MacOS
+.DS_Store

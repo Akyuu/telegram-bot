@@ -4,17 +4,22 @@
 
 import requests
 import config
-import logging
+from abc import abstractmethod
 
 
 class Handler:
     def __init__(self, message):
         self.message = message
         self.chat_id = message['chat']['id']
-        logging.debug("Handler: Message from %d: %s" % (self.chat_id, self.message))
+        self.sender = message.get('from', {}).get('username', 'NoUser')
 
+    @abstractmethod
     def handle(self):
         pass
+
+    @classmethod
+    def response(cls, message):
+        return None
 
     def send_message(self, msg, chat_id=None, markdown=False):
         url = "https://api.telegram.org/bot%s/sendMessage" % config.API_TOKEN
@@ -23,10 +28,4 @@ class Handler:
         j = {"chat_id": chat_id, "text": msg}
         if markdown: j['parse_mode'] = 'Markdown'
         r = requests.post(url, json=j)
-
-
-class TextHandler(Handler):
-    def __init__(self, message):
-        Handler.__init__(self, message)
-        self.text = message['text']
 

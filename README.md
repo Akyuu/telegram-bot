@@ -11,16 +11,15 @@
 ## 依赖
 
 - Python3 (基于 Python 3.6 开发)
-- 位于 requirement.txt 的 python 第三方库
-- ffmpeg，用于将 mp4 转换为 gif
+- python3-requests
+- ffmpeg，用于转换图片及视频格式
 
 ## 部署
 
 ```
-# 注：需安装 ffmpeg libffi-dev libwebp-dev git python3-pip 等相关依赖
+# 注：需安装 ffmpeg git python3-requests 等相关依赖
 git clone https://github.com/Akyuu/telegram-bot.git
 cd telegram-bot/
-pip3 install -r requirements.txt
 # 之后需要修改 config.py 中 API_TOKEN 常量的值
 python3 server.py
 ```

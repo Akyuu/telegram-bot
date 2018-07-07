@@ -11,8 +11,13 @@ import uuid
 
 
 class VideoHandler(Handler):
+    @classmethod
+    def response(cls, message):
+        if message.get('document') and message['document'].get('mime_type') == 'video/mp4':
+            return VideoHandler(message)
+
     def handle(self):
-        logging.debug(self.message)
+        logging.info("[%s] send a video." % self.sender)
         file_id = self.message['document']['file_id']
 
         # 获取 file_path
@@ -20,7 +25,7 @@ class VideoHandler(Handler):
         r = requests.get(url, {'file_id': file_id})
         if r.status_code == requests.codes.ok and r.json()['ok']:
             file_path = r.json()['result']['file_path']
-            logging.debug("Video: file_path" + file_path)
+            logging.debug("file_path: " + file_path)
 
             # 下载 sticker 对应的 mp4 文件并保存
             filename = str(uuid.uuid1())
@@ -30,13 +35,11 @@ class VideoHandler(Handler):
                 f.write(r.content)
 
             # 利用 ffmpeg 转换文件
-            # subprocess.run('ffmpeg -i %s.mp4 -r 25 "frames/%s-%%03d.jpg"' % (file_id, file_id), shell=True)
-            # subprocess.run('convert -delay 4 -loop 1 frames/%s-*.jpg %s.gif' % (file_id, file_id), shell=True)
-            # subprocess.run('rm -f frames/%s-*.jpg' % file_id, shell=True)
-            subprocess.run('ffmpeg -i %s.mp4 -r 25 -vf scale=270:-1 %s.gif' % (filename, filename), shell=True)
-            logging.debug("Video: convert video to gif.")
+            subprocess.run('ffmpeg -loglevel panic -i %s.mp4 -r 25 -vf "scale=iw/2:ih/2:flags=lanczos" %s.gif' % (filename, filename), shell=True)
+            logging.debug("convert video to gif.")
 
             # 上传文件，由于 Telegram 服务器会自动将 gif 转换为 mp4，故上传到图床
+            logging.debug("upload gif to sm.ms")
             url = 'https://sm.ms/api/upload'
             gif = open(filename+'.gif', 'rb')
             files = {'smfile': gif}
@@ -44,14 +47,14 @@ class VideoHandler(Handler):
             code = r.json()['code']
             pic_url = r.json()['data']['url']
             if code == 'success':
-                logging.debug("Video: upload gif to sm.ms")
+                logging.info("gif url: " + pic_url)
                 # 发送图床链接
                 self.send_message(pic_url)
-                # 删除缓存文件
             else:
-                logging.error("Video: " + r.text)
+                logging.error("request.text: " + r.text)
 
+            # 删除缓存文件
             gif.close()
             subprocess.run('rm -f %s.mp4 %s.gif' % (filename, filename), shell=True)
         else:
-            logging.error("Video: " + r.text)
+            logging.error('request.text: ' + r.text)
