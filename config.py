@@ -3,4 +3,4 @@
 
 # Bot API Token
 API_TOKEN = "This_Is_Bot_API_Token"
-TIMEOUT = 10
+TIMEOUT = 15
