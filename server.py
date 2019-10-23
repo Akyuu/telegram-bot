@@ -108,11 +108,10 @@ def animation(update, _):
 
 
 def user_info(update, _):
-    user = update.message.from_user
-    username = user.username if user.username else user.first_name
-    logging.info("[%s] sent a gif." % username)
-    msg = json.dumps(str(user), sort_keys=True, indent=4, separators=(',', ': '))
-    msg = msg.encode('utf-8')
+    user = update.message.forward_from if update.message.forward_from else update.message.from_user
+    logging.info(str(update))
+    msg = json.dumps(user.to_dict(), sort_keys=True, indent=4, separators=(',', ': '))
+    msg = msg.encode().decode('unicode-escape')
     update.message.reply_text(msg)
 
 
